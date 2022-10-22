@@ -1,20 +1,21 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
+ * Developers:
+ * Luis Fernando Lara Saldarriaga - 202024730 - 3743
+ * 
  */
 package travelagency;
 
 /**
- *
- * @author luisfernandolarasaldarriaga
+ * Main project JAVA class, which contains the main method.
+ * Manages project execution and event handling.
  */
 public class TravelAgency {
 
     /**
      * @param args the command line arguments
      */
+    
     public static void main(String[] args) {
-        // TODO code application logic here
     }
     
 }

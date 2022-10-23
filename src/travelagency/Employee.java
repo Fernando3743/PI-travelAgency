@@ -14,4 +14,8 @@ public class Employee {
        this.name = name;
        this.position = position;
     }
+    
+    public String getInfo() {
+        return name + " ( " + identification + " ) - " + position; 
+    }
 }

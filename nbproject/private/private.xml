@@ -4,9 +4,12 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/Users/luisfernandolarasaldarriaga/NetBeansProjects/travelAgency/src/travelagency/TravelAgency.java</file>
+            <file>file:/Users/luisfernandolarasaldarriaga/NetBeansProjects/travelAgency/src/travelagency/Tour.java</file>
+            <file>file:/Users/luisfernandolarasaldarriaga/NetBeansProjects/travelAgency/src/travelagency/forms/EmployeeForm.java</file>
             <file>file:/Users/luisfernandolarasaldarriaga/NetBeansProjects/travelAgency/src/travelagency/Employee.java</file>
             <file>file:/Users/luisfernandolarasaldarriaga/NetBeansProjects/travelAgency/src/travelagency/Bus.java</file>
             <file>file:/Users/luisfernandolarasaldarriaga/NetBeansProjects/travelAgency/src/travelagency/Driver.java</file>
+            <file>file:/Users/luisfernandolarasaldarriaga/NetBeansProjects/travelAgency/src/travelagency/Route.java</file>
         </group>
     </open-files>
 </project-private>

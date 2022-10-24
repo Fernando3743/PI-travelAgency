@@ -14,6 +14,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.border.Border;
 import travelagency.forms.EmployeeForm;
@@ -46,6 +47,7 @@ public class TravelAgency extends JFrame{
         initGUI();
         setTitle("Traveling Agency");
         setSize(800,600);
+        setLocationRelativeTo(null);
         setVisible(true);
         setResizable(false);
         setDefaultCloseOperation(EXIT_ON_CLOSE); 
@@ -55,7 +57,8 @@ public class TravelAgency extends JFrame{
         Border grayRoundedBorder = BorderFactory.createLineBorder(Color.LIGHT_GRAY, 2, true);
         
         mainTextArea.setBorder(BorderFactory.createTitledBorder(grayRoundedBorder, "Output"));
-        this.add(mainTextArea, BorderLayout.CENTER);
+        JScrollPane scrollable = new JScrollPane(mainTextArea);
+        this.add(scrollable, BorderLayout.CENTER);
         actionsPanel = new JPanel(new GridLayout(3, 1));
         
         
@@ -109,8 +112,15 @@ public class TravelAgency extends JFrame{
                 .reduce("Active employees: \n", (acc, e) -> acc + e + "\n");
         
         this.displayText(reducedEmployeesInfo);
-        
-        
+           
+    }
+    
+    public boolean checkUniqueEmployee(int id){
+        return employeesList
+                .stream()
+                .filter(e -> e.getID() == id)
+                .findAny()
+                .isEmpty();
     }
     
     public void addEmployee(Employee newEmployee){

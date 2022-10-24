@@ -42,6 +42,7 @@ public class EmployeeForm extends JFrame {
         initGUI();
         setTitle("Employee Form");
         setSize(500,250);
+        setLocationRelativeTo(null);
         setVisible(true);
         setResizable(false);
         setDefaultCloseOperation(EXIT_ON_CLOSE);       
@@ -115,25 +116,32 @@ public class EmployeeForm extends JFrame {
                 String position = positionField.getText();
                 
                 if (!Pattern.matches(employeeIdRegex, id)){
-                    JOptionPane.showMessageDialog(null, "Invalid employee identification. \nIt should contains only numbers and not be empty.");
-                    currentForm.identificationField.setText("");
+                    JOptionPane.showMessageDialog(myAgency, "Invalid employee identification. \nIt should contains only numbers and not be empty.");
+                    identificationField.setText("");
                     return;
                 }
                 
                 if (!Pattern.matches(alphaRegex, name)){
                     JOptionPane.showMessageDialog(null, "Invalid employee name. \nIt should contains only alphabetic chars and not be empty.");
-                    currentForm.nameField.setText("");
+                    nameField.setText("");
                     return;
                 }
                 
                 if (!Pattern.matches(alphaRegex, position)){
                     JOptionPane.showMessageDialog(null, "Invalid employee position. \nIt should contains only alphabetic chars and not be empty.");
-                    currentForm.positionField.setText("");
+                    positionField.setText("");
+                    return;
+                }
+                
+                int parsedID = Integer.parseInt(id);
+                
+                if (!myAgency.checkUniqueEmployee(parsedID)){
+                    JOptionPane.showMessageDialog(null, "An employee with ID " + id + " already exist.");
+                    identificationField.setText("");
                     return;
                 }
                 
                 
-                int parsedID = Integer.parseInt(id);
                 Employee newEmployee = new Employee(parsedID, name, position);
                 myAgency.addEmployee(newEmployee);
                 myAgency.setVisible(true);

@@ -4,7 +4,7 @@ package travelagency;
  *
  * @author luisfernandolarasaldarriaga
  */
-public class Employee {
+public class Employee {   
     private int identification;
     private String name;
     private String position;

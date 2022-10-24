@@ -13,13 +13,14 @@ import java.awt.event.ActionListener;
 import java.util.regex.Pattern;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 import javax.swing.border.Border;
-import travelagency.Employee;
+import travelagency.*;
 
 /**
  *
@@ -28,7 +29,7 @@ import travelagency.Employee;
 public class EmployeeForm extends JFrame {
     JTextField identificationField;
     JTextField nameField;
-    JTextField positionField;
+    JComboBox positionField;
     JButton saveButton;
     JButton cancelButton;
     JPanel fieldsPanel;
@@ -55,7 +56,7 @@ public class EmployeeForm extends JFrame {
         
         identificationField = new JTextField();
         nameField = new JTextField();
-        positionField = new JTextField();
+        positionField = new JComboBox(EmployeePositions.values());
         
         
         // Setting up borders
@@ -113,7 +114,7 @@ public class EmployeeForm extends JFrame {
             if(e.getSource() == saveButton){
                 String id = identificationField.getText();
                 String name = nameField.getText();
-                String position = positionField.getText();
+                String position = positionField.getSelectedItem().toString();
                 
                 if (!Pattern.matches(employeeIdRegex, id)){
                     JOptionPane.showMessageDialog(myAgency, "Invalid employee identification. \nIt should contains only numbers and not be empty.");
@@ -127,12 +128,6 @@ public class EmployeeForm extends JFrame {
                     return;
                 }
                 
-                if (!Pattern.matches(alphaRegex, position)){
-                    JOptionPane.showMessageDialog(null, "Invalid employee position. \nIt should contains only alphabetic chars and not be empty.");
-                    positionField.setText("");
-                    return;
-                }
-                
                 int parsedID = Integer.parseInt(id);
                 
                 if (!myAgency.checkUniqueEmployee(parsedID)){
@@ -142,8 +137,10 @@ public class EmployeeForm extends JFrame {
                 }
                 
                 
-                Employee newEmployee = new Employee(parsedID, name, position);
-                myAgency.addEmployee(newEmployee);
+                if(EmployeePositions.DRIVER.toString().equals(position)) {
+                    myAgency.addEmployee(new Driver(parsedID, name, position));
+                }
+
                 myAgency.setVisible(true);
                 currentForm.dispose();
                 

@@ -7,9 +7,9 @@ import java.util.ArrayList;
  * @author luisfernandolarasaldarriaga
  */
 public class Route {
-    String origin;
-    String destination;
-    ArrayList<Tour> tours;
+    private String origin;
+    private String destination;
+    private ArrayList<Tour> tours;
     
     public Route(String origin,String destination){
         this.origin = origin;

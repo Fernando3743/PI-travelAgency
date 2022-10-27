@@ -9,6 +9,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.util.ArrayList;
+import java.util.stream.Stream;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -17,6 +18,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.border.Border;
+import travelagency.forms.BusForm;
 import travelagency.forms.EmployeeForm;
 
 /**
@@ -24,23 +26,25 @@ import travelagency.forms.EmployeeForm;
  * Manages project execution and event handling.
  */
 public class TravelAgency extends JFrame{
-    JPanel actionsPanel;
-    JPanel addPanel;
-    JPanel listPanel;
-    JPanel filterPanel;
+    private JPanel actionsPanel;
+    private JPanel addPanel;
+    private JPanel listPanel;
+    private JPanel filterPanel;
     
-    JButton newEmployeeButton;
-    JButton newBusButton;
-    JButton newRouteButton;
+    private JButton newEmployeeButton;
+    private JButton newBusButton;
+    private JButton newRouteButton;
     
-    JButton listEmployeeButton;
+    private JButton listEmployeeButton;
+    private JButton listRoutesButton;
+    private JButton listBusesButton;
     
-    JTextArea mainTextArea;
+    private JTextArea mainTextArea;
     
-    ArrayList<Employee> employeesList;
+    private ArrayList<Driver> driversList;
     
     public TravelAgency(){
-        employeesList = new ArrayList<>();
+        driversList = new ArrayList<>();
         mainTextArea = new JTextArea();
         mainTextArea.setEditable(false);
         
@@ -51,6 +55,10 @@ public class TravelAgency extends JFrame{
         setVisible(true);
         setResizable(false);
         setDefaultCloseOperation(EXIT_ON_CLOSE); 
+    }
+    
+    private Stream<Driver> getAvaliableDrivers(){
+        return driversList.stream().filter(e -> e.hasBusAssigned());
     }
     
     public void initGUI(){
@@ -74,11 +82,16 @@ public class TravelAgency extends JFrame{
             new EmployeeForm(this);
         });
         
-        addPanel.add(newEmployeeButton);
-        addPanel.add(newBusButton);
-        addPanel.add(newRouteButton);
+        newBusButton.addActionListener(e -> {
+            this.setVisible(false);
+            new BusForm(this, getAvaliableDrivers());
+        });
         
-        addPanel.setBorder(BorderFactory.createTitledBorder(grayRoundedBorder, "ADD"));
+        addPanel.add(newEmployeeButton);
+        addPanel.add(newRouteButton);
+        addPanel.add(newBusButton);
+        
+        addPanel.setBorder(BorderFactory.createTitledBorder(grayRoundedBorder, "Click an option to ADD"));
         actionsPanel.add(addPanel);
         
         
@@ -86,12 +99,16 @@ public class TravelAgency extends JFrame{
         
         listPanel = new JPanel(new GridLayout(1, 3));
         listEmployeeButton = new JButton("Employee");
+        listRoutesButton = new JButton("Routes");
+        listBusesButton = new JButton("Buses");
         
         listEmployeeButton.addActionListener(e -> this.listEmployees());
         
         listPanel.add(listEmployeeButton);
+        listPanel.add(listRoutesButton);
+        listPanel.add(listBusesButton);
         
-        listPanel.setBorder(BorderFactory.createTitledBorder(grayRoundedBorder, "List"));
+        listPanel.setBorder(BorderFactory.createTitledBorder(grayRoundedBorder, "Click an option to LIST"));
         
         actionsPanel.add(listPanel);
         
@@ -106,7 +123,7 @@ public class TravelAgency extends JFrame{
     }
     
     public void listEmployees() {
-        String reducedEmployeesInfo = employeesList
+        String reducedEmployeesInfo = driversList
                 .stream()
                 .map(e -> e.getInfo())
                 .reduce("Active employees: \n", (acc, e) -> acc + e + "\n");
@@ -116,15 +133,15 @@ public class TravelAgency extends JFrame{
     }
     
     public boolean checkUniqueEmployee(int id){
-        return employeesList
+        return driversList
                 .stream()
                 .filter(e -> e.getID() == id)
                 .findAny()
                 .isEmpty();
     }
     
-    public void addEmployee(Employee newEmployee){
-        employeesList.add(newEmployee);
+    public void addEmployee(Driver newDriver){
+        driversList.add(newDriver);
     }
     /**
      * @param args the command line arguments

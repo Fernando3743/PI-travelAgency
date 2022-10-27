@@ -7,6 +7,7 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Vector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -86,10 +87,9 @@ public class BusForm extends JFrame{
        
        // Init combobox
        
-       ArrayList<Driver> testList = new ArrayList<Driver>(Arrays.asList( new Driver(4444, "test2", "test position")));
-       
-       Í
-       driverSelect = new JComboBox(testList.stream().map(d -> d.getInfo()).toArray());
+       ArrayList<Driver> testList = new ArrayList<Driver>(List.of(new Driver(4444, "test2", "test position")));
+
+       driverSelect = new JComboBox(testList.stream().map(Employee::getInfo).toArray());
        
        inputPanel.add(driverSelect);
        

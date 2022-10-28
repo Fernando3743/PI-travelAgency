@@ -63,7 +63,7 @@ public class EmployeeForm extends JFrame {
         
         Border grayRoundedBorder = BorderFactory.createLineBorder(Color.LIGHT_GRAY, 2, true);
         
-        identificationField.setBorder(BorderFactory.createTitledBorder(grayRoundedBorder,"Employee's identification number (max 4 digits allowed)"));
+        identificationField.setBorder(BorderFactory.createTitledBorder(grayRoundedBorder,"Employee's identification number (only numeric digits allowed)"));
         nameField.setBorder(BorderFactory.createTitledBorder(grayRoundedBorder,"Employee's full name"));
         positionField.setBorder(BorderFactory.createTitledBorder(grayRoundedBorder,"Employee's company position/rol"));
         

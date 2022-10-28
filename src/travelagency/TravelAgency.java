@@ -8,15 +8,11 @@ package travelagency;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.stream.Stream;
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
+import java.util.List;
+import javax.swing.*;
 import javax.swing.border.Border;
 import travelagency.forms.BusForm;
 import travelagency.forms.EmployeeForm;
@@ -42,9 +38,11 @@ public class TravelAgency extends JFrame{
     private JTextArea mainTextArea;
     
     private ArrayList<Driver> driversList;
+    private ArrayList<Bus> busesList;
     
     public TravelAgency(){
         driversList = new ArrayList<>();
+        busesList = new ArrayList<>();
         mainTextArea = new JTextArea();
         mainTextArea.setEditable(false);
         
@@ -57,8 +55,8 @@ public class TravelAgency extends JFrame{
         setDefaultCloseOperation(EXIT_ON_CLOSE); 
     }
     
-    private Stream<Driver> getAvaliableDrivers(){
-        return driversList.stream().filter(e -> e.hasBusAssigned());
+    private List<Driver> getAvaliableDrivers(){
+        return driversList.stream().filter(e -> !e.hasBusAssigned()).toList();
     }
     
     public void initGUI(){
@@ -76,16 +74,15 @@ public class TravelAgency extends JFrame{
         newEmployeeButton = new JButton("Employee");
         newBusButton = new JButton("Bus");
         newRouteButton = new JButton("Route");
+
+        EventManager eventManager = new EventManager(this);
         
         newEmployeeButton.addActionListener(e -> {
             this.setVisible(false);
             new EmployeeForm(this);
         });
         
-        newBusButton.addActionListener(e -> {
-            this.setVisible(false);
-            new BusForm(this, getAvaliableDrivers());
-        });
+        newBusButton.addActionListener(eventManager);
         
         addPanel.add(newEmployeeButton);
         addPanel.add(newRouteButton);
@@ -103,6 +100,7 @@ public class TravelAgency extends JFrame{
         listBusesButton = new JButton("Buses");
         
         listEmployeeButton.addActionListener(e -> this.listEmployees());
+        listBusesButton.addActionListener(e -> this.listBuses());
         
         listPanel.add(listEmployeeButton);
         listPanel.add(listRoutesButton);
@@ -125,7 +123,7 @@ public class TravelAgency extends JFrame{
     public void listEmployees() {
         String reducedEmployeesInfo = driversList
                 .stream()
-                .map(e -> e.getInfo())
+                .map(Employee::getInfo)
                 .reduce("Active employees: \n", (acc, e) -> acc + e + "\n");
         
         this.displayText(reducedEmployeesInfo);
@@ -143,6 +141,25 @@ public class TravelAgency extends JFrame{
     public void addEmployee(Driver newDriver){
         driversList.add(newDriver);
     }
+
+    public void listBuses() {
+        String reduceBuses = busesList
+                .stream()
+                .map(Bus::getInfo)
+                .reduce("Active buses: \n", (acc, e) -> acc + e + "\n");
+
+        this.displayText(reduceBuses);
+    }
+
+    public boolean checkUniqueBus(String licensePlate){
+        return busesList
+                .stream()
+                .filter(e -> e.getLicensePlate().equals(licensePlate))
+                .findAny()
+                .isEmpty();
+    }
+
+    public void addBus (Bus bus) { busesList.add(bus) ;}
     /**
      * @param args the command line arguments
      */
@@ -150,6 +167,29 @@ public class TravelAgency extends JFrame{
     public static void main(String[] args) {
         TravelAgency myAgency = new TravelAgency();
         
+    }
+
+    class EventManager implements ActionListener{
+
+        TravelAgency myAgency;
+
+        public  EventManager (TravelAgency agency){
+            myAgency = agency;
+        }
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (e.getSource() == newBusButton){
+                List<Driver> availableDrivers = getAvaliableDrivers();
+                if (availableDrivers.size() > 0){
+                    myAgency.setVisible(false);
+                    new BusForm(myAgency, getAvaliableDrivers());
+                    return;
+                }
+
+                JOptionPane.showMessageDialog(myAgency, "There aren't available Drivers, create a new one.");
+
+            }
+        }
     }
     
 }

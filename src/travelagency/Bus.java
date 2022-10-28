@@ -19,6 +19,16 @@ public class Bus {
         this.driver = driver;
         
     }
+
+    public String getLicensePlate(){
+        return  licensePlate;
+    }
+
+    public String getInfo() {
+
+        return String.format("  license: %s \n  passengers capacity: %s \n  gallons amount: %s  \n", licensePlate, passengerCapacity, gallonsAmount);
+
+    }
     
     
 }

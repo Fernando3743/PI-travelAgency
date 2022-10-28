@@ -1,25 +1,14 @@
 package travelagency.forms;
 
-import com.sun.security.auth.module.JndiLoginModule;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
-import java.util.Vector;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import javax.swing.ComboBoxModel;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JSpinner;
-import javax.swing.JTextField;
+import java.util.regex.Pattern;
+import javax.swing.*;
 import javax.swing.border.Border;
 import travelagency.*;
 /**
@@ -39,13 +28,13 @@ public class BusForm extends JFrame{
     private JButton cancelButton;
     
     private TravelAgency myAgency;
-    private Stream<Driver> avaliableEmployeesList;
+    private List<Driver> availableDriversList;
     
     private JComboBox driverSelect;
     
     
-    public BusForm(TravelAgency agency,Stream<Driver> employeesList){
-        this.avaliableEmployeesList = employeesList;
+    public BusForm(TravelAgency agency,List<Driver> employeesList){
+        this.availableDriversList = employeesList;
         this.myAgency = agency;
         
         initGUI();
@@ -68,7 +57,7 @@ public class BusForm extends JFrame{
         
         Border grayRoundedBorder = BorderFactory.createLineBorder(Color.LIGHT_GRAY, 2, true);
         
-        licenseField.setBorder(BorderFactory.createTitledBorder(grayRoundedBorder, "Enter BUS license plate."));
+        licenseField.setBorder(BorderFactory.createTitledBorder(grayRoundedBorder, "Enter BUS license plate. like AAA-123"));
         passengersField.setBorder(BorderFactory.createTitledBorder(grayRoundedBorder, "Enter passengers MAX capacity"));
         gallonsField.setBorder(BorderFactory.createTitledBorder(grayRoundedBorder, "Enter gasoline gallons MAX capacity"));
         
@@ -83,13 +72,10 @@ public class BusForm extends JFrame{
        
        
        inputPanel.add(numericPanel);
-       ;
        
        // Init combobox
-       
-       ArrayList<Driver> testList = new ArrayList<Driver>(List.of(new Driver(4444, "test2", "test position")));
 
-       driverSelect = new JComboBox(testList.stream().map(Employee::getInfo).toArray());
+       driverSelect = new JComboBox(availableDriversList.stream().map(Employee::getInfo).toArray());
        
        inputPanel.add(driverSelect);
        
@@ -104,12 +90,86 @@ public class BusForm extends JFrame{
                 this.dispose();
                 myAgency.setVisible(true);
             });
+
+        EventManager eventManager = new EventManager(this);
+
+        saveButton.addActionListener(eventManager);
         
         buttonsPanel.add(saveButton);
         buttonsPanel.add(cancelButton);
                
        this.add(inputPanel, BorderLayout.CENTER); 
        this.add(buttonsPanel, BorderLayout.SOUTH);
+    }
+
+
+    class EventManager implements ActionListener {
+        BusForm activeForm;
+        String licenseRegex;
+
+        public EventManager(BusForm form){
+            licenseRegex = "[A-Z]{3}-[0-9]{3}";
+            activeForm = form;
+        }
+
+        private int tryCastInt(String num){
+            int result = -1;
+            try {
+                result = Integer.parseInt(num);
+            } catch (Exception ignored) {}
+
+            return result;
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if(e.getSource() == saveButton) {
+                String license = licenseField.getText();
+                String passengers = passengersField.getValue().toString();
+                String gallons = gallonsField.getValue().toString();
+
+                if(!Pattern.matches(licenseRegex, license)){
+                    JOptionPane.showMessageDialog(myAgency, "Invalid license plate format. \nIt should be in format like AAA-123");
+                    licenseField.setText("");
+                    return;
+                }
+
+                if(!myAgency.checkUniqueBus(license)){
+                    JOptionPane.showMessageDialog(myAgency, "A bus with license plate " + license + " already exists.");
+                    licenseField.setText("");
+                    return;
+                }
+
+                int passengersInt = this.tryCastInt(passengers);
+
+                if(passengersInt <= 0){
+                    JOptionPane.showMessageDialog(myAgency, "Invalid passengers capacity format. \nIt should be a numeric value higher than 0");
+                    passengersField.setValue(0);
+                    return;
+                }
+
+                int gallonsInt = this.tryCastInt(gallons);
+
+                if(gallonsInt <= 0){
+                    JOptionPane.showMessageDialog(myAgency, "Invalid gallons amount format. \nIt should be a numeric value higher than 0");
+                    gallonsField.setValue(0);
+                    return;
+                }
+
+                int driverSelectedIndex = driverSelect.getSelectedIndex();
+
+                Driver selectedDriver = availableDriversList.get(driverSelectedIndex);
+
+                selectedDriver.setBusAssigned(true);
+
+                Bus bus = new Bus(license,passengersInt, gallonsInt, selectedDriver);
+                myAgency.addBus(bus);
+
+                activeForm.dispose();
+                myAgency.setVisible(true);
+
+            }
+        }
     }
     
     

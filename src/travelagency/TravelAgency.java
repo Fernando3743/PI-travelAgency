@@ -1,7 +1,6 @@
 /*
  * Developers:
  * Luis Fernando Lara Saldarriaga - 202024730 - 3743
- * 
  */
 package travelagency;
 
@@ -39,7 +38,10 @@ public class TravelAgency extends JFrame{
     
     private ArrayList<Driver> driversList;
     private ArrayList<Bus> busesList;
-    
+
+    /***
+     * Constructor.
+     */
     public TravelAgency(){
         driversList = new ArrayList<>();
         busesList = new ArrayList<>();
@@ -54,11 +56,18 @@ public class TravelAgency extends JFrame{
         setResizable(false);
         setDefaultCloseOperation(EXIT_ON_CLOSE); 
     }
-    
+
+    /***
+     * Filters available drivers.
+     * @return avaliable drivers (the ones who don't have a bus assigned)
+     */
     private List<Driver> getAvaliableDrivers(){
         return driversList.stream().filter(e -> !e.hasBusAssigned()).toList();
     }
-    
+
+    /***
+     * Initialize the GUI.
+     */
     public void initGUI(){
         Border grayRoundedBorder = BorderFactory.createLineBorder(Color.LIGHT_GRAY, 2, true);
         
@@ -113,13 +122,20 @@ public class TravelAgency extends JFrame{
         
         this.add(actionsPanel, BorderLayout.WEST);
     }
-    
+
+    /**
+     * Appends the new text to the already existing in the output panel.
+     * @param text to display in the output panel.
+     */
     public void displayText(String text) {
         String currentText = mainTextArea.getText();
         
         mainTextArea.setText(currentText + "\n" + text);
     }
-    
+
+    /**
+     * Reduces and display all employee's information.
+     */
     public void listEmployees() {
         String reducedEmployeesInfo = driversList
                 .stream()
@@ -129,7 +145,12 @@ public class TravelAgency extends JFrame{
         this.displayText(reducedEmployeesInfo);
            
     }
-    
+
+    /**
+     * Check if the given employee id is unique.
+     * @param id employee's identification number
+     * @return true if the given id doesn't exist.
+     */
     public boolean checkUniqueEmployee(int id){
         return driversList
                 .stream()
@@ -137,11 +158,18 @@ public class TravelAgency extends JFrame{
                 .findAny()
                 .isEmpty();
     }
-    
+
+    /**
+     * Adds the given employee to the driversList
+     * @param newDriver driver to be added
+     */
     public void addEmployee(Driver newDriver){
         driversList.add(newDriver);
     }
 
+    /**
+     * Reduces and display all buses information.
+     */
     public void listBuses() {
         String reduceBuses = busesList
                 .stream()
@@ -151,6 +179,11 @@ public class TravelAgency extends JFrame{
         this.displayText(reduceBuses);
     }
 
+    /**
+     * Checks if the given license plate is unique.
+     * @param licensePlate bus license plate
+     * @return true if the given license plate doesn't exists.
+     */
     public boolean checkUniqueBus(String licensePlate){
         return busesList
                 .stream()
@@ -159,23 +192,39 @@ public class TravelAgency extends JFrame{
                 .isEmpty();
     }
 
+    /**
+     * Adds the given bus to busesList
+     * @param bus bus to be added to busesList
+     */
     public void addBus (Bus bus) { busesList.add(bus) ;}
+
     /**
      * @param args the command line arguments
      */
-    
     public static void main(String[] args) {
         TravelAgency myAgency = new TravelAgency();
         
     }
 
+    /**
+     * Manages, listen and handles the frame application events.
+     */
     class EventManager implements ActionListener{
 
         TravelAgency myAgency;
 
+        /**
+         * Constructor.
+         * @param agency pointer to the main frame.
+         */
         public  EventManager (TravelAgency agency){
             myAgency = agency;
         }
+
+        /**
+         * Handles action events.
+         * @param e the event to be processed
+         */
         @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getSource() == newBusButton){

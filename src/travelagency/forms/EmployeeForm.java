@@ -23,8 +23,9 @@ import javax.swing.border.Border;
 import travelagency.*;
 
 /**
- *
  * @author luisfernandolarasaldarriaga
+ * JFrame employee form, manages the entire employee form in an independent window, contains a pointer to the main frame "Travel Agency",
+ * so all data typed and validated here is saved in the main frame.
  */
 public class EmployeeForm extends JFrame {
     JTextField identificationField;
@@ -35,8 +36,11 @@ public class EmployeeForm extends JFrame {
     JPanel fieldsPanel;
     JPanel buttonsPanel;
     travelagency.TravelAgency myAgency;
-    
-    
+
+    /**
+     * Construtor.
+     * @param agency pointer to the main frame.
+     */
     public EmployeeForm(travelagency.TravelAgency agency) {
         this.myAgency = agency;
         
@@ -48,7 +52,10 @@ public class EmployeeForm extends JFrame {
         setResizable(false);
         setDefaultCloseOperation(EXIT_ON_CLOSE);       
     }
-    
+
+    /**
+     * Initializes GUI, (all Java Swing components like JButtons, JTextFields, etc).
+     */
     public void initGUI(){
         
         // Init fields panel 
@@ -96,19 +103,29 @@ public class EmployeeForm extends JFrame {
         
         this.add(buttonsPanel, BorderLayout.SOUTH);
     }
-    
+
+    /**
+     * Manages, listen and handles the frame application events.
+     */
     class EventManager implements ActionListener {
         EmployeeForm currentForm;
         String employeeIdRegex;
         String alphaRegex;
-        
+
+        /**
+         * Constructor.
+         * @param form pointer to the active form.
+         */
         public EventManager(EmployeeForm form) {
             currentForm = form;
             employeeIdRegex = "[0-9]+";
             alphaRegex = "[a-z A-Z]+";
         }
-        
-        
+
+        /**
+         * Handles action events.
+         * @param e the event to be processed
+         */
         @Override
         public void actionPerformed(ActionEvent e) {
             if(e.getSource() == saveButton){
@@ -135,11 +152,12 @@ public class EmployeeForm extends JFrame {
                     identificationField.setText("");
                     return;
                 }
-                
-                
-                if(EmployeePositions.DRIVER.toString().equals(position)) {
-                    myAgency.addEmployee(new Driver(parsedID, name, position));
-                }
+
+                Driver newEmployee = new Driver(parsedID, name, position);
+
+                myAgency.addEmployee(newEmployee);
+
+                myAgency.displayText("Employee " + newEmployee.getInfo() + " added successfully!");
 
                 myAgency.setVisible(true);
                 currentForm.dispose();

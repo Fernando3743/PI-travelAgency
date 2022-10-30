@@ -1,14 +1,19 @@
 package travelagency;
 
 /**
- *
  * @author luisfernandolarasaldarriaga
  */
 public class Employee {   
     private int identification;
     private String name;
     private String position;
-    
+
+    /**
+     * Constructor.
+     * @param id employee's identification
+     * @param name employee's name
+     * @param position employee's position in agency
+     */
     public Employee(int id,String name,String position){
        this.identification = id;
        this.name = name;

@@ -14,6 +14,8 @@ import travelagency.*;
 /**
  *
  * @author luisfernandolarasaldarriaga
+ * JFrame bus form, manages the entire bus form in an independent window, contains a pointer to the main frame "Travel Agency",
+ * so all data typed and validated here is saved in the main frame.
  */
 public class BusForm extends JFrame{
     private JPanel inputPanel;
@@ -31,8 +33,12 @@ public class BusForm extends JFrame{
     private List<Driver> availableDriversList;
     
     private JComboBox driverSelect;
-    
-    
+
+    /**
+     * Constructor.
+     * @param agency pointer to the main frame.
+     * @param employeesList available employees.
+     */
     public BusForm(TravelAgency agency,List<Driver> employeesList){
         this.availableDriversList = employeesList;
         this.myAgency = agency;
@@ -45,7 +51,10 @@ public class BusForm extends JFrame{
         setResizable(false);
         setDefaultCloseOperation(EXIT_ON_CLOSE);  
     }
-    
+
+    /**
+     * Initializes GUI, (all Java Swing components like JButtons, JTextFields, etc).
+     */
     public void initGUI() {
         
         // INIT inputs fields
@@ -102,16 +111,27 @@ public class BusForm extends JFrame{
        this.add(buttonsPanel, BorderLayout.SOUTH);
     }
 
-
+    /**
+     * Manages, listen and handles the frame application events.
+     */
     class EventManager implements ActionListener {
         BusForm activeForm;
         String licenseRegex;
 
+        /**
+         * Constructor.
+         * @param form pointer to the active form.
+         */
         public EventManager(BusForm form){
             licenseRegex = "[A-Z]{3}-[0-9]{3}";
             activeForm = form;
         }
 
+        /**
+         * Tries parse int, catches any exception and returns -1 if so.
+         * @param num number to be parsed
+         * @return parsed to int number, or -1 if an Exception occurred.
+         */
         private int tryCastInt(String num){
             int result = -1;
             try {
@@ -121,6 +141,10 @@ public class BusForm extends JFrame{
             return result;
         }
 
+        /**
+         * Handles action events.
+         * @param e the event to be processed
+         */
         @Override
         public void actionPerformed(ActionEvent e) {
             if(e.getSource() == saveButton) {

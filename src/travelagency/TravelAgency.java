@@ -136,7 +136,7 @@ public class TravelAgency extends JFrame {
         this.filterPanel = new JPanel(new GridLayout(2, 1));
         this.filterPanel.setPreferredSize(new Dimension(this.actionsPanel.getWidth(), 60));
         this.filterButton = new JButton("Search");
-        this.filterButton.addActionListener(e -> this.searchRouteByOrigin());
+        this.filterButton.addActionListener(e -> this.searchBusByOrigin());
         this.searchBar = new JTextField();
 
         this.filterPanel.add(this.searchBar);
@@ -282,7 +282,7 @@ public class TravelAgency extends JFrame {
     }
 
     /**
-     * agrega una nueva ruta
+     * adds a new Route
      *
      * @param newRoute
      */
@@ -291,7 +291,7 @@ public class TravelAgency extends JFrame {
     }
 
     /**
-     * lista las rutas almacenadas
+     * List saved routes
      */
     public void listRoutes() {
         String data = "";
@@ -312,36 +312,24 @@ public class TravelAgency extends JFrame {
             }
         }
 
-        this.mainTextArea.setText(data);
+        displayText(data);
 
     }
 
-    /*
-     * filtra las rutas por la ciudad de origen
+    /**
+     *
+     * Filters and display buses by a given city name.
      */
-    public void searchRouteByOrigin() {
-        // String data = "";
-        // String tourStr = "";
-        // if(this.routeList.get){
+    public void searchBusByOrigin() {
+        String givenOrigin = searchBar.getText();
 
-        // }
-        // for (int i = 0; i < this.routeList.size(); i++) {
-        // if (this.searchBar.getText().equals(this.routeList.get(i).getOrigin())) {
-        // for (int b = 0; b < this.routeList.get(i).getTour().size(); b++) {
-        // tourStr += this.routeList.get(i).getTour().get(b).getOrigin() + " - "
-        // + this.routeList.get(i).getTour().get(b).getDestination() + " ("
-        // + this.routeList.get(i).getTour().get(b).getDate() + ", " +
-        // this.routeList.get(i).getTour().get(b).getDeparture() + " - "
-        // + this.routeList.get(i).getTour().get(b).getArrival() + ")";
-        // }
-        // data += this.routeList.get(i).getOrigin() + " - " +
-        // this.routeList.get(i).getDestination() + ", "
-        // + tourStr + "\n";
-        // }
-        // }
-        // String result = (data.isEmpty() || data == "") ? "¡Ups! No matches found" :
-        // data;
-        // this.mainTextArea.setText(result);
+        String foundedBus = busesList.stream().filter(b -> b.getRoute()
+                        .getOrigin()
+                        .equals(givenOrigin))
+                        .map(Bus::agencyInfo)
+                        .reduce("Buses found \n", (acc, s) -> acc + s + "\n");
+
+        displayText(foundedBus);
     }
 
 }

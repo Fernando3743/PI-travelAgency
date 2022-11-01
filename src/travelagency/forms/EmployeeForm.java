@@ -164,7 +164,7 @@ public class EmployeeForm extends JFrame {
 
                 myAgency.addEmployee(newEmployee);
 
-                myAgency.displayText("Employee " + newEmployee.getInfo() + " added successfully!");
+                myAgency.displayText("Employee " + newEmployee.getInfo() + " added successfully! \n");
 
                 myAgency.setVisible(true);
                 currentForm.dispose();

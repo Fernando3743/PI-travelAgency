@@ -35,12 +35,26 @@ public class Bus {
     }
 
     /**
+     * @return bus's route
+     */
+    public Route getRoute() {
+        return route;
+    }
+
+    /**
      * @return bus's license + passengers capacity + gallons amount
      */
     public String getInfo() {
 
         return String.format("  license: %s \n  passengers capacity: %s \n  gallons amount: %s  \n", licensePlate, passengerCapacity, gallonsAmount);
 
+    }
+
+    /**
+     * @return full agency trip information.
+     */
+    public String agencyInfo () {
+        return String.format("Driver Name: %s \nPassengers Capacity: %s \nRoute: %s \n", driver.getName(), this.passengerCapacity, route.getTripInfo());
     }
     
     

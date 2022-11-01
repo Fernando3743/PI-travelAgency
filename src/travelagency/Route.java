@@ -23,10 +23,16 @@ public class Route {
         this.tours = tour;
     }
 
+    /**
+     * @return routes's origin
+     */
     public String getOrigin() {
         return this.origin;
     }
 
+    /**
+     * @return routes's destination
+     */
     public String getDestination() {
         return this.destination;
     }
@@ -36,6 +42,27 @@ public class Route {
         return this.origin + " - " + this.destination;
     }
 
+    /**
+     * @return full trip information (all tours info appended)
+     */
+    public String getTripInfo() {
+        
+        String tourStr = "";
+
+        for (Tour tour : this.tours) {
+            tourStr += tour.getOrigin() + " - "
+                    + tour.getDestination() + " ("
+                    + tour.getDate() + ", " +
+                    tour.getDeparture() + " - "
+                    + tour.getArrival() + ") \n";
+        }
+
+        return tourStr + "\n";
+    }
+
+    /**
+     * @return routes's tours list
+     */
     public ArrayList<Tour> getTour() {
         return this.tours;
     }

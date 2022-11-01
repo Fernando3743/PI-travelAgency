@@ -23,7 +23,15 @@ public class Employee {
     public int getID() {
         return this.identification;
     }
-    
+
+    /**
+     * @return employee's name
+     */
+    public String getName () { return this.name; }
+
+    /**
+     * @return employee's full information.
+     */
     public String getInfo() {
         return name + " ( " + identification + " ) - " + position; 
     }

@@ -31,22 +31,37 @@ public class Tour {
         this.arrivalTime = arrivalTime;
     }
 
+    /**
+     * @return tours's date
+     */
     public String getDate() {
         return this.date;
     }
 
+    /**
+     * @return tours's origin
+     */
     public String getOrigin() {
         return this.origin;
     }
 
+    /**
+     * @return tours's destination
+     */
     public String getDestination() {
         return this.destination;
     }
 
+    /**
+     * @return tours's departure time
+     */
     public String getDeparture() {
         return this.departureTime;
     }
 
+    /**
+     * @return tours's arrival time
+     */
     public String getArrival() {
         return this.arrivalTime;
     }

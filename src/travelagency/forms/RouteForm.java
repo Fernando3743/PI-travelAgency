@@ -53,6 +53,10 @@ public class RouteForm extends JFrame {
 
     String meses[] = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
 
+    /**
+     * Constructor.
+     * @param agency pointer to main frame
+     */
     public RouteForm(travelagency.TravelAgency agency) {
         this.myAgency = agency;
         this.tourList = new ArrayList<Tour>();
@@ -60,6 +64,10 @@ public class RouteForm extends JFrame {
         iniciarComponentes();
     }
 
+
+    /**
+     * Initialize GUI components.
+     */
     public void iniciarComponentes() {
         // Se configuran propiedades del frame
         setTitle("Add route");
@@ -106,6 +114,9 @@ public class RouteForm extends JFrame {
         this.panelListadoRec.setBorder(BorderFactory.createTitledBorder(grayRoundedBorder, "Tour list"));
     }
 
+    /**
+     * Init and add event listeners to the frame buttons
+     */
     public void configurarBotones() {
         this.agregarRecorrido = new JButton("Add tour");
         this.guardarRuta = new JButton("Save route");
@@ -115,6 +126,9 @@ public class RouteForm extends JFrame {
         this.guardarRuta.addActionListener(ev -> this.guardarRuta());
     }
 
+    /**
+     * Initialize and customize JText fields
+     */
     public void configurarCamposTexto() {
         this.origenPpal = new JTextField();
         this.destinoPpal = new JTextField();
@@ -125,9 +139,10 @@ public class RouteForm extends JFrame {
         this.destinoPpal.setBorder(BorderFactory.createTitledBorder(grayRoundedBorder, "Principal destination"));
     }
 
+    /**
+     * Initialize and customize route components
+     */
     public void configurarRecorridos() {
-        // this.tablaRecorridos = new JTable();
-        // ArrayList<Tour> recorridos;
         Border grayRoundedBorder = BorderFactory.createLineBorder(Color.LIGHT_GRAY, 2, true);
         this.panelRuta1 = new JPanel(new GridLayout(1, 2, 5, 5));
         this.origen1 = new JTextField();
@@ -159,6 +174,9 @@ public class RouteForm extends JFrame {
         this.panelHora2.setBorder(BorderFactory.createTitledBorder(grayRoundedBorder, "Time"));
     }
 
+    /**
+     * Initialize and customize fields that manages dates.
+     */
     public void configurarFecha() {
         Border grayRoundedBorder = BorderFactory.createLineBorder(Color.LIGHT_GRAY, 2, true);
         this.textoFecha = new JLabel("Enter the date of the trip: ");
@@ -179,6 +197,9 @@ public class RouteForm extends JFrame {
         this.mes.setBorder(BorderFactory.createTitledBorder(grayRoundedBorder, "Month"));
     }
 
+    /**
+     * Appends and display the new tour
+     */
     public void guardarRecorrido() {
         String fechaRec = this.dia.getText() + " " + this.mes.getSelectedItem().toString();
         String origen = this.origen1.getText();
@@ -205,6 +226,9 @@ public class RouteForm extends JFrame {
         }
     }
 
+    /**
+     * Saves the new route
+     */
     public void guardarRuta() {
         String origen = this.origenPpal.getText();
         String destino = this.destinoPpal.getText();
@@ -221,6 +245,11 @@ public class RouteForm extends JFrame {
         }
     }
 
+    /**
+     * Valodates if the given number is valid.
+     * @param num day in number format.
+     * @return true if num is a valid day
+     */
     public Boolean validarDia(String num) {
         try {
             Integer number = Integer.parseInt(num);

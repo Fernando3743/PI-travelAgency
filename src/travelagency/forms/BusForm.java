@@ -18,9 +18,7 @@ import travelagency.*;
  * so all data typed and validated here is saved in the main frame.
  */
 public class BusForm extends JFrame{
-    private JPanel inputPanel;
-    private JPanel buttonsPanel;
-    private JPanel numericPanel;
+    private JPanel inputPanel, buttonsPanel, numericPanel;
     
     private JTextField licenseField;
     private JSpinner passengersField;
@@ -31,15 +29,17 @@ public class BusForm extends JFrame{
     
     private TravelAgency myAgency;
     private List<Driver> availableDriversList;
+    private List<Route> availableRoutes;
     
-    private JComboBox driverSelect;
+    private JComboBox driverSelect, routeSelect;
 
     /**
      * Constructor.
      * @param agency pointer to the main frame.
      * @param employeesList available employees.
      */
-    public BusForm(TravelAgency agency,List<Driver> employeesList){
+    public BusForm(TravelAgency agency,List<Driver> employeesList, List<Route> routesList){
+        this.availableRoutes = routesList;
         this.availableDriversList = employeesList;
         this.myAgency = agency;
         
@@ -58,7 +58,7 @@ public class BusForm extends JFrame{
     public void initGUI() {
         
         // INIT inputs fields
-        inputPanel = new JPanel(new GridLayout(3, 1));
+        inputPanel = new JPanel(new GridLayout(4, 1));
         
         licenseField = new JTextField();
         passengersField = new JSpinner();
@@ -85,8 +85,10 @@ public class BusForm extends JFrame{
        // Init combobox
 
        driverSelect = new JComboBox(availableDriversList.stream().map(Employee::getInfo).toArray());
-       
+       routeSelect = new JComboBox(availableRoutes.stream().map(Route::toString).toArray());
+
        inputPanel.add(driverSelect);
+       inputPanel.add(routeSelect);
        
        // INIT actions buttons
         
@@ -186,7 +188,11 @@ public class BusForm extends JFrame{
 
                 selectedDriver.setBusAssigned(true);
 
-                Bus bus = new Bus(license,passengersInt, gallonsInt, selectedDriver);
+                int routeSelectedIndex = routeSelect.getSelectedIndex();
+
+                Route selectedRoute = availableRoutes.get(routeSelectedIndex);
+
+                Bus bus = new Bus(license,passengersInt, gallonsInt, selectedDriver, selectedRoute);
                 myAgency.addBus(bus);
 
                 activeForm.dispose();

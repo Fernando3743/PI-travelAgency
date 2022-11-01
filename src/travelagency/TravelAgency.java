@@ -244,13 +244,18 @@ public class TravelAgency extends JFrame {
         public void actionPerformed(ActionEvent e) {
             if (e.getSource() == newBusButton) {
                 List<Driver> availableDrivers = getAvaliableDrivers();
-                if (availableDrivers.size() > 0) {
-                    myAgency.setVisible(false);
-                    new BusForm(myAgency, getAvaliableDrivers());
+                if (availableDrivers.isEmpty()) {
+                    JOptionPane.showMessageDialog(myAgency, "There aren't available Drivers, create a new one.");
                     return;
                 }
 
-                JOptionPane.showMessageDialog(myAgency, "There aren't available Drivers, create a new one.");
+                if (routeList.isEmpty()) {
+                    JOptionPane.showMessageDialog(myAgency, "There aren't available Routes, create a new one.");
+                    return;
+                }
+
+                myAgency.setVisible(false);
+                new BusForm(myAgency, getAvaliableDrivers(), routeList);
 
             }
         }

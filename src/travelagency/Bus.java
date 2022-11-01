@@ -18,11 +18,12 @@ public class Bus {
      * @param gallonsAmount bus's gallons amount
      * @param driver bus's driver
      */
-    public Bus (String licensePlate, int passengerCapacity, int gallonsAmount, Driver driver){
+    public Bus (String licensePlate, int passengerCapacity, int gallonsAmount, Driver driver, Route route){
         this.licensePlate = licensePlate;
         this.passengerCapacity = passengerCapacity;
         this.gallonsAmount = gallonsAmount;
         this.driver = driver;
+        this.route = route;
         
     }
 

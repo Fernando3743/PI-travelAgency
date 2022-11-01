@@ -31,6 +31,11 @@ public class Route {
         return this.destination;
     }
 
+    @Override
+    public String toString() {
+        return this.origin + " - " + this.destination;
+    }
+
     public ArrayList<Tour> getTour() {
         return this.tours;
     }

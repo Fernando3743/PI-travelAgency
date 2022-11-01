@@ -24,8 +24,10 @@ import travelagency.*;
 
 /**
  * @author luisfernandolarasaldarriaga
- * JFrame employee form, manages the entire employee form in an independent window, contains a pointer to the main frame "Travel Agency",
- * so all data typed and validated here is saved in the main frame.
+ *         JFrame employee form, manages the entire employee form in an
+ *         independent window, contains a pointer to the main frame "Travel
+ *         Agency",
+ *         so all data typed and validated here is saved in the main frame.
  */
 public class EmployeeForm extends JFrame {
     JTextField identificationField;
@@ -39,68 +41,69 @@ public class EmployeeForm extends JFrame {
 
     /**
      * Construtor.
+     * 
      * @param agency pointer to the main frame.
      */
     public EmployeeForm(travelagency.TravelAgency agency) {
         this.myAgency = agency;
-        
+
         initGUI();
         setTitle("Employee Form");
-        setSize(500,250);
+        setSize(500, 250);
         setLocationRelativeTo(null);
         setVisible(true);
         setResizable(false);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);       
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
 
     /**
      * Initializes GUI, (all Java Swing components like JButtons, JTextFields, etc).
      */
-    public void initGUI(){
-        
-        // Init fields panel 
+    public void initGUI() {
+
+        // Init fields panel
         fieldsPanel = new JPanel(new GridLayout(3, 1));
-        
+
         identificationField = new JTextField();
         nameField = new JTextField();
         positionField = new JComboBox(EmployeePositions.values());
-        
-        
+
         // Setting up borders
-        
+
         Border grayRoundedBorder = BorderFactory.createLineBorder(Color.LIGHT_GRAY, 2, true);
-        
-        identificationField.setBorder(BorderFactory.createTitledBorder(grayRoundedBorder,"Employee's identification number (only numeric digits allowed)"));
-        nameField.setBorder(BorderFactory.createTitledBorder(grayRoundedBorder,"Employee's full name"));
-        positionField.setBorder(BorderFactory.createTitledBorder(grayRoundedBorder,"Employee's company position/rol"));
-        
+
+        identificationField.setBorder(BorderFactory.createTitledBorder(grayRoundedBorder,
+                "Employee's identification number (only numeric digits allowed)"));
+        nameField.setBorder(BorderFactory.createTitledBorder(grayRoundedBorder, "Employee's full name"));
+        positionField.setBorder(BorderFactory.createTitledBorder(grayRoundedBorder, "Employee's company position/rol"));
+
         fieldsPanel.add(identificationField);
         fieldsPanel.add(nameField);
         fieldsPanel.add(positionField);
-        
+
         this.add(fieldsPanel, BorderLayout.CENTER);
-        
-        //Init buttons panel 
-        
+
+        // Init buttons panel
+
         buttonsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        
+
         saveButton = new JButton("Save");
         cancelButton = new JButton("Cancel");
-        
-        //Event handling
-        
+
+        // Event handling
+
         EventManager eventManager = new EventManager(this);
-        
+
         saveButton.addActionListener(eventManager);
-        
+
         cancelButton.addActionListener(e -> {
-                this.dispose();
-                myAgency.setVisible(true);
-            });
-        
+            this.dispose();
+            myAgency.setVisible(true);
+        });
+
         buttonsPanel.add(saveButton);
         buttonsPanel.add(cancelButton);
-        
+
         this.add(buttonsPanel, BorderLayout.SOUTH);
     }
 
@@ -114,6 +117,7 @@ public class EmployeeForm extends JFrame {
 
         /**
          * Constructor.
+         * 
          * @param form pointer to the active form.
          */
         public EventManager(EmployeeForm form) {
@@ -124,30 +128,33 @@ public class EmployeeForm extends JFrame {
 
         /**
          * Handles action events.
+         * 
          * @param e the event to be processed
          */
         @Override
         public void actionPerformed(ActionEvent e) {
-            if(e.getSource() == saveButton){
+            if (e.getSource() == saveButton) {
                 String id = identificationField.getText();
                 String name = nameField.getText();
                 String position = positionField.getSelectedItem().toString();
-                
-                if (!Pattern.matches(employeeIdRegex, id)){
-                    JOptionPane.showMessageDialog(myAgency, "Invalid employee identification. \nIt should contains only numbers and not be empty.");
+
+                if (!Pattern.matches(employeeIdRegex, id)) {
+                    JOptionPane.showMessageDialog(myAgency,
+                            "Invalid employee identification. \nIt should contains only numbers and not be empty.");
                     identificationField.setText("");
                     return;
                 }
-                
-                if (!Pattern.matches(alphaRegex, name)){
-                    JOptionPane.showMessageDialog(null, "Invalid employee name. \nIt should contains only alphabetic chars and not be empty.");
+
+                if (!Pattern.matches(alphaRegex, name)) {
+                    JOptionPane.showMessageDialog(null,
+                            "Invalid employee name. \nIt should contains only alphabetic chars and not be empty.");
                     nameField.setText("");
                     return;
                 }
-                
+
                 int parsedID = Integer.parseInt(id);
-                
-                if (!myAgency.checkUniqueEmployee(parsedID)){
+
+                if (!myAgency.checkUniqueEmployee(parsedID)) {
                     JOptionPane.showMessageDialog(null, "An employee with ID " + id + " already exist.");
                     identificationField.setText("");
                     return;
@@ -161,10 +168,10 @@ public class EmployeeForm extends JFrame {
 
                 myAgency.setVisible(true);
                 currentForm.dispose();
-                
+
             }
-            
+
         }
     }
-    
+
 }

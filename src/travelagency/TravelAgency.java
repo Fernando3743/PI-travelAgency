@@ -1,6 +1,7 @@
 /*
  * Developers:
  * Luis Fernando Lara Saldarriaga - 202024730 - 3743
+ * Camilo Murillo Gomez - 1931058-2711
  */
 package travelagency;
 
@@ -16,6 +17,7 @@ import javax.swing.border.Border;
 import travelagency.forms.BusForm;
 import travelagency.forms.EmployeeForm;
 import travelagency.forms.RouteForm;
+import java.awt.Dimension;
 
 /**
  * Main project JAVA class, which contains the main method.
@@ -34,6 +36,9 @@ public class TravelAgency extends JFrame {
     private JButton listEmployeeButton;
     private JButton listRoutesButton;
     private JButton listBusesButton;
+    private JButton filterButton;
+
+    private JTextField searchBar;
 
     private JTextArea mainTextArea;
 
@@ -125,6 +130,21 @@ public class TravelAgency extends JFrame {
         listPanel.setBorder(BorderFactory.createTitledBorder(grayRoundedBorder, "Click an option to LIST"));
 
         actionsPanel.add(listPanel);
+
+        // buscador
+
+        this.filterPanel = new JPanel(new GridLayout(2, 1));
+        this.filterPanel.setPreferredSize(new Dimension(this.actionsPanel.getWidth(), 60));
+        this.filterButton = new JButton("Search");
+        this.filterButton.addActionListener(e -> this.searchRouteByOrigin());
+        this.searchBar = new JTextField();
+
+        this.filterPanel.add(this.searchBar);
+        this.filterPanel.add(this.filterButton);
+
+        this.filterPanel.setBorder(BorderFactory.createTitledBorder(grayRoundedBorder, "Filter routes by origin"));
+
+        actionsPanel.add(this.filterPanel);
 
         this.add(actionsPanel, BorderLayout.WEST);
     }
@@ -261,29 +281,67 @@ public class TravelAgency extends JFrame {
         }
     }
 
+    /**
+     * agrega una nueva ruta
+     *
+     * @param newRoute
+     */
     public void addRoute(Route newRoute) {
         this.routeList.add(newRoute);
     }
 
+    /**
+     * lista las rutas almacenadas
+     */
     public void listRoutes() {
         String data = "";
         String tourStr = "";
-        for (int i = 0; i < this.routeList.size(); i++) {
-            for (int b = 0; b < this.routeList.get(i).getTour().size(); b++) {
-                tourStr += this.routeList.get(i).getTour().get(b).getOrigin() + " - "
-                        + this.routeList.get(i).getTour().get(b).getDestination() + " ("
-                        + this.routeList.get(i).getTour().get(b).getDate() + ", " +
-                        this.routeList.get(i).getTour().get(b).getDeparture() + " - "
-                        + this.routeList.get(i).getTour().get(b).getArrival() + ")";
+        if (this.routeList.isEmpty()) {
+            data = "No routes found";
+        } else {
+            for (int i = 0; i < this.routeList.size(); i++) {
+                for (int b = 0; b < this.routeList.get(i).getTour().size(); b++) {
+                    tourStr += this.routeList.get(i).getTour().get(b).getOrigin() + " - "
+                            + this.routeList.get(i).getTour().get(b).getDestination() + " ("
+                            + this.routeList.get(i).getTour().get(b).getDate() + ", " +
+                            this.routeList.get(i).getTour().get(b).getDeparture() + " - "
+                            + this.routeList.get(i).getTour().get(b).getArrival() + ")";
+                }
+                data += this.routeList.get(i).getOrigin() + " - " + this.routeList.get(i).getDestination() + ", "
+                        + tourStr + "\n";
             }
-            data += this.routeList.get(i).getOrigin() + " - " + this.routeList.get(i).getDestination() + ", "
-                    + tourStr + "\n";
         }
+
         this.mainTextArea.setText(data);
+
     }
 
+    /*
+     * filtra las rutas por la ciudad de origen
+     */
     public void searchRouteByOrigin() {
+        // String data = "";
+        // String tourStr = "";
+        // if(this.routeList.get){
 
+        // }
+        // for (int i = 0; i < this.routeList.size(); i++) {
+        // if (this.searchBar.getText().equals(this.routeList.get(i).getOrigin())) {
+        // for (int b = 0; b < this.routeList.get(i).getTour().size(); b++) {
+        // tourStr += this.routeList.get(i).getTour().get(b).getOrigin() + " - "
+        // + this.routeList.get(i).getTour().get(b).getDestination() + " ("
+        // + this.routeList.get(i).getTour().get(b).getDate() + ", " +
+        // this.routeList.get(i).getTour().get(b).getDeparture() + " - "
+        // + this.routeList.get(i).getTour().get(b).getArrival() + ")";
+        // }
+        // data += this.routeList.get(i).getOrigin() + " - " +
+        // this.routeList.get(i).getDestination() + ", "
+        // + tourStr + "\n";
+        // }
+        // }
+        // String result = (data.isEmpty() || data == "") ? "¡Ups! No matches found" :
+        // data;
+        // this.mainTextArea.setText(result);
     }
 
 }

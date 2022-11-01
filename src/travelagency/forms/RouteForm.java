@@ -210,6 +210,9 @@ public class RouteForm extends JFrame {
         String destino = this.destinoPpal.getText();
         if (origen.isEmpty() || destino.isEmpty() || this.tourList.isEmpty()) {
             JOptionPane.showMessageDialog(null, "You must fill in all the fields");
+        } else if (!origen.equals(this.tourList.get(0).getOrigin())) {
+
+            JOptionPane.showMessageDialog(null, "Principal origin and first tour origin not matches");
         } else {
             Route newRoute = new Route(origen, destino, this.tourList);
             this.myAgency.addRoute(newRoute);
